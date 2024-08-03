@@ -1,4 +1,4 @@
-#include "NTupleReader/include/NTupleReader.h"
+#include "FitSiPMData/include/NTupleReader.h"
 
 #include "TFile.h"
 #include "TChain.h"

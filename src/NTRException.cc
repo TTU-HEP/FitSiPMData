@@ -1,4 +1,4 @@
-#include "NTupleReader/include/NTRException.h"
+#include "FitSiPMData/include/NTRException.h"
 
 #include <iostream>
 

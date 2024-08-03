@@ -14,7 +14,7 @@
 //#include <cstdio>
 //#include <vector>
 #include "SPEfunc.h"
-#include "../include/NTupleReader.h"
+#include "FitSiPMData/include/NTupleReader.h"
 
 //This function fits the SiPM MIP distribution
 void fitSPEMIP(TH1* hfit, int run)

@@ -6,10 +6,10 @@ LDFLAGS       = @LDFLAGS@
 PYTHONCFG     = @PYTHONCFG@
 
 #manual configuration
-IDIR       = $(CMSSW_BASE)/src/NTupleReader/include/
+IDIR       = $(CMSSW_BASE)/src/FitSiPMData/include/
 WDIR       = .
 ODIR       = obj
-SDIR       = $(CMSSW_BASE)/src/NTupleReader/src/
+SDIR       = $(CMSSW_BASE)/src/FitSiPMData/src/
 
 CXX        = g++
 
