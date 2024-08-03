@@ -1,0 +1,74 @@
+## Variables set by configure 
+CXX           = @CXX@
+LD            = @CXX@
+CXXFLAGS      = @CXXFLAGS@
+LDFLAGS       = @LDFLAGS@
+PYTHONCFG     = @PYTHONCFG@
+
+#manual configuration
+IDIR       = $(CMSSW_BASE)/src/NTupleReader/include/
+WDIR       = .
+ODIR       = obj
+SDIR       = $(CMSSW_BASE)/src/NTupleReader/src/
+
+CXX        = g++
+
+CXXFLAGS += -I. -std=c++0x -I$(CMSSW_BASE)/src/ -isystem$(LHAPDF_DATA_PATH)/../../include -I$(CMSSW_RELEASE_BASE)/src 
+#CXXFLAGS += -I$(shell scram tool info fastjet | grep '^INCLUDE' | sed 's/INCLUDE=//')
+#CXXFLAGS += -I$(shell scram tool info boost | grep '^INCLUDE' | sed 's/INCLUDE=//')
+## Optimization flag
+CXXFLAGS += -g -fPIC
+## Enable the maximun warning
+#CXXFLAGS += -Wall -Wextra -Weffc++ -g
+
+## Include ROOT
+CXXFLAGS  += $(shell root-config --cflags)
+
+CXXDEPFLAGS = -MMD -MP
+
+LD         = g++
+LDFLAGS    =
+
+#Necessary includes and libraries, the order matters here!
+
+## Include ROOT
+INCLUDESDIRS += $(shell root-config --cflags)
+# ROOT libraries
+LIBS         += $(shell root-config --glibs)
+
+#python includes and libraries
+ifdef PYTHONCFG
+	INCLUDESDIRS  += $(shell $(PYTHONCFG) --includes)
+
+	CXXFLAGS += -DDOTENSORFLOWPYBIND
+	LIBS     += -L$(shell $(PYTHONCFG) --prefix)/lib $(shell $(PYTHONCFG) --libs)
+endif
+
+PROGRAMS = tupleReadTest mipFitsSiPM
+
+all: mkobj $(PROGRAMS)
+
+mkobj:
+	@mkdir -p $(ODIR)
+
+# Link it all up
+SRC_EXT = cpp c cc C
+SRC_DIR = $(SDIR) $(WDIR)
+INCLUDESDIRS += -I$(SDIR) -I$(IDIR) -I$(WDIR)
+define compile_rule
+$$(ODIR)/%.o : $1/%.$2
+	$$(CXX) $$(CXXFLAGS) $$(CXXDEPFLAGS)  $$(INCLUDESDIRS) -o $$@ -c $$<
+endef    
+$(foreach DIR,$(SRC_DIR),$(foreach EXT,$(SRC_EXT),$(eval $(call compile_rule,$(DIR),$(EXT)))))
+
+# Make executables
+tupleReadTest: $(ODIR)/tupleReadTest.o $(ODIR)/NTupleReader.o $(ODIR)/NTRException.o
+	$(LD) $^ $(LIBS) $(LHAPDFLIB) -o $@
+
+mipFitsSiPM:  $(ODIR)/mipFitsSiPM.o $(ODIR)/NTupleReader.o $(ODIR)/NTRException.o
+	$(LD) $^ $(LIBS) $(LHAPDFLIB) -o $@
+
+clean:
+	rm -rf $(ODIR)/*.a $(ODIR)/*.so $(ODIR)/*.o $(ODIR)/*.d $(PROGRAMS) core $(ODIR)
+
+-include $(ODIR)/*.d
