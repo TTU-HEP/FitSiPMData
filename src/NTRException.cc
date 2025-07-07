@@ -1,4 +1,4 @@
-#include "FitSiPMData/include/NTRException.h"
+#include "../include/NTRException.h"
 
 #include <iostream>
 

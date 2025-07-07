@@ -24,18 +24,19 @@ double crystalBall(double* x, double* p)
   //p[3]: switchover point
   //p[4]: power law slope
   if((x[0] - p[1])/p[2] > -p[3])
-    {
-      return p[0]*TMath::Gaus(x[0], p[1], p[2]);
-    }
+  {
+    return p[0]*TMath::Gaus(x[0], p[1], p[2]);
+  }
   else
-    {
-      double A = pow(p[4]/fabs(p[3]), p[4]) * TMath::Exp(-pow(p[3], 2)/2);
-      double B = p[4]/fabs(p[3]) - fabs(p[3]);
-      return A*(B - pow((x[0]-p[1])/p[2], -p[4]));
-    }
+  {
+    double A = pow(p[4]/fabs(p[3]), p[4]) * TMath::Exp(-pow(p[3], 2)/2);
+    double B = p[4]/fabs(p[3]) - fabs(p[3]);
+    return A*(B - pow((x[0]-p[1])/p[2], -p[4]));
+  }
 }
 
-Double_t gaufun(Double_t *x, Double_t *par) {
+Double_t gaufun(Double_t *x, Double_t *par) 
+{
   //par[0]=mean
   //par[1]=sigma
   //par[2]=amplitude
@@ -44,8 +45,8 @@ Double_t gaufun(Double_t *x, Double_t *par) {
 }
 
 // landau-gaussian convolution using numerical integration
-Double_t langaufun(Double_t *x, Double_t *par) {
-
+Double_t langaufun(Double_t *x, Double_t *par) 
+{
   //Fit parameters:
   //par[0]=Width (scale) parameter of Landau density
   //par[1]=Most Probable (MP, location) parameter of Landau density
@@ -84,7 +85,8 @@ Double_t langaufun(Double_t *x, Double_t *par) {
   step = (xupp-xlow) / np;
 
   // Convolution integral of Landau and Gaussian by sum
-  for(i=1.0; i<=np/2; i++){
+  for(i=1.0; i<=np/2; i++)
+  {
     xx = xlow + (i-.5) * step;
     fland = TMath::Landau(xx,mpc,par[0]) / par[0];
     sum += fland * TMath::Gaus(x[0],xx,par[3]);
@@ -128,36 +130,37 @@ class PPEFunc
     nPeaks_ = nPeak;
     domip_ = domip;
     
-      CPn.push_back(0);
-      CPn.push_back(1);
-      CPn.push_back(n);
-      CPn.push_back((n*(-1 + 3*n))/2.);
-      CPn.push_back((n*(1 - 6*n + 8*pow(n,2)))/3.);
-      CPn.push_back((n*(-3 + 5*n)*(-2 + 5*n)*(-1 + 5*n))/24.);
-      CPn.push_back((n*(-1 + 2*n)*(-2 + 3*n)*(-1 + 3*n)*(-1 + 6*n))/10.);
-      CPn.push_back((n*(-5 + 7*n)*(-4 + 7*n)*(-3 + 7*n)*(-2 + 7*n)*(-1 + 7*n))/720.);
-      CPn.push_back((n*(-1 + 2*n)*(-3 + 4*n)*(-1 + 4*n)*(-5 + 8*n)*(-3 + 8*n)*(-1 + 8*n))/315.);
-      CPn.push_back((n*(-2 + 3*n)*(-1 + 3*n)*(-7 + 9*n)*(-5 + 9*n)*(-4 + 9*n)*(-2 + 9*n)*(-1 + 9*n))/4480.);
-      CPn.push_back((n*(-1 + 2*n)*(-4 + 5*n)*(-3 + 5*n)*(-2 + 5*n)*(-1 + 5*n)*(-7 + 10*n)*(-3 + 10*n)*(-1 + 10*n))/4536.);
-      CPn.push_back((n*(-9 + 11*n)*(-8 + 11*n)*(-7 + 11*n)*(-6 + 11*n)*(-5 + 11*n)*(-4 + 11*n)*(-3 + 11*n)*(-2 + 11*n)*(-1 + 11*n))/3.6288e6);
-      CPn.push_back((n*(-1 + 2*n)*(-2 + 3*n)*(-1 + 3*n)*(-3 + 4*n)*(-1 + 4*n)*(-5 + 6*n)*(-1 + 6*n)*(-7 + 12*n)*(-5 + 12*n)*(-1 + 12*n))/11550.);
-      CPn.push_back((n*(-11 + 13*n)*(-10 + 13*n)*(-9 + 13*n)*(-8 + 13*n)*(-7 + 13*n)*(-6 + 13*n)*(-5 + 13*n)*(-4 + 13*n)*(-3 + 13*n)*(-2 + 13*n)*(-1 + 13*n))/4.790016e8);
-      CPn.push_back((n*(-1 + 2*n)*(-6 + 7*n)*(-5 + 7*n)*(-4 + 7*n)*(-3 + 7*n)*(-2 + 7*n)*(-1 + 7*n)*(-11 + 14*n)*(-9 + 14*n)*(-5 + 14*n)*(-3 + 14*n)*(-1 + 14*n))/1.38996e7);
-      CPn.push_back((pow(n,2)*(19802759040 + n*(-425547472896 + n*(4895614496136 + n*(-36007056781696 + n*(180954419071426 + n*(-643524004371248 + n*(1648017660281993 + n*(-3051606955645248 + n*(4048835387589993 + n*(-3751975766595056 + n*(2305159936523171 + n*(-843351196289056 + 139013933454241*n)))))))))))))/6.2270208e9);
-    
-      //configure utility functions for fits
-      funcs.push_back(new TF1("ped", "gaus"));
+    CPn.push_back(0);
+    CPn.push_back(1);
+    CPn.push_back(n);
+    CPn.push_back((n*(-1 + 3*n))/2.);
+    CPn.push_back((n*(1 - 6*n + 8*pow(n,2)))/3.);
+    CPn.push_back((n*(-3 + 5*n)*(-2 + 5*n)*(-1 + 5*n))/24.);
+    CPn.push_back((n*(-1 + 2*n)*(-2 + 3*n)*(-1 + 3*n)*(-1 + 6*n))/10.);
+    CPn.push_back((n*(-5 + 7*n)*(-4 + 7*n)*(-3 + 7*n)*(-2 + 7*n)*(-1 + 7*n))/720.);
+    CPn.push_back((n*(-1 + 2*n)*(-3 + 4*n)*(-1 + 4*n)*(-5 + 8*n)*(-3 + 8*n)*(-1 + 8*n))/315.);
+    CPn.push_back((n*(-2 + 3*n)*(-1 + 3*n)*(-7 + 9*n)*(-5 + 9*n)*(-4 + 9*n)*(-2 + 9*n)*(-1 + 9*n))/4480.);
+    CPn.push_back((n*(-1 + 2*n)*(-4 + 5*n)*(-3 + 5*n)*(-2 + 5*n)*(-1 + 5*n)*(-7 + 10*n)*(-3 + 10*n)*(-1 + 10*n))/4536.);
+    CPn.push_back((n*(-9 + 11*n)*(-8 + 11*n)*(-7 + 11*n)*(-6 + 11*n)*(-5 + 11*n)*(-4 + 11*n)*(-3 + 11*n)*(-2 + 11*n)*(-1 + 11*n))/3.6288e6);
+    CPn.push_back((n*(-1 + 2*n)*(-2 + 3*n)*(-1 + 3*n)*(-3 + 4*n)*(-1 + 4*n)*(-5 + 6*n)*(-1 + 6*n)*(-7 + 12*n)*(-5 + 12*n)*(-1 + 12*n))/11550.);
+    CPn.push_back((n*(-11 + 13*n)*(-10 + 13*n)*(-9 + 13*n)*(-8 + 13*n)*(-7 + 13*n)*(-6 + 13*n)*(-5 + 13*n)*(-4 + 13*n)*(-3 + 13*n)*(-2 + 13*n)*(-1 + 13*n))/4.790016e8);
+    CPn.push_back((n*(-1 + 2*n)*(-6 + 7*n)*(-5 + 7*n)*(-4 + 7*n)*(-3 + 7*n)*(-2 + 7*n)*(-1 + 7*n)*(-11 + 14*n)*(-9 + 14*n)*(-5 + 14*n)*(-3 + 14*n)*(-1 + 14*n))/1.38996e7);
+    CPn.push_back((pow(n,2)*(19802759040 + n*(-425547472896 + n*(4895614496136 + n*(-36007056781696 + n*(180954419071426 + n*(-643524004371248 + n*(1648017660281993 + n*(-3051606955645248 + n*(4048835387589993 + n*(-3751975766595056 + n*(2305159936523171 + n*(-843351196289056 + 139013933454241*n)))))))))))))/6.2270208e9);
+  
+    //configure utility functions for fits
+    funcs.push_back(new TF1("ped", "gaus"));
 
-      for(int i = 1; i <= nTotalPeaks_; i++){
-	//fill funcs
-	std::string pnum = "pe" + std::to_string(i);
-	funcs.push_back(new TF1(pnum.c_str(), "gaus"));
-      }
-    
-      funcs.push_back(new TF1("bg",  "landau"));
-      funcMIP = new TF1("mip",  langaufun, 0, 400000, 4);
-
+    for(int i = 1; i <= nTotalPeaks_; i++)
+    {
+	    //fill funcs
+	    std::string pnum = "pe" + std::to_string(i);
+	    funcs.push_back(new TF1(pnum.c_str(), "gaus"));
     }
+    
+    funcs.push_back(new TF1("bg",  "landau"));
+    funcMIP = new TF1("mip",  langaufun, 0, 400000, 4);
+
+  }
 
   double ppeFunc(double* x, double* p)
   {
@@ -166,7 +169,7 @@ class PPEFunc
       p[0] : pedestal amplitude
       p[1] : pedestal width
       p[2] : Overall Shift (avg. pedestal)
-      p[3] : background amplidude
+      p[3] : background amplitude
       p[4] : background width
       p[5] : overall PE amplitude 
       p[6] : poisson mean number of PE
@@ -213,7 +216,8 @@ class PPEFunc
     //Utility functions used parameterize the pedestal, PE peaks, and generic background 
     int i;
     funcs[0]->SetParameters(p[0],    0.0, p[1]);
-    for(i = 1; i < nPeaks_+1; i++){
+    for(i = 1; i < nPeaks_+1; i++)
+    {
       funcs[i]->SetParameters(p[5],  (i-1)*p[7], p[8]);
     }
     funcs[16]->SetParameters(p[3],    0.0, p[4]);
@@ -226,13 +230,14 @@ class PPEFunc
     //calculate contribution to bin of interest from each sub-function
     //double g = funcs[0]->Integral(ll, ul)/(ul - ll);
     double g = funcs[0]->Eval(x[0]-p[2]);
-    for(i = 1; i < nPeaks_+1; i++){
+    for(i = 1; i < nPeaks_+1; i++)
+    {
       //std::string gnum = "g" + std::to_string(i);
       //g += sc[i] * funcs[i]->Integral(ll, ul)/(ul - ll);
       g += sc[i] * funcs[i]->Eval(x[0]-p[2]);
     }
     //g += funcs[i]->Integral(ll, ul)/(ul - ll);
-    g += funcs[i]->Eval(x[0]-p[2]);
+    g += funcs[16]->Eval(x[0]-p[2]+50);
     
     return g;
   }
@@ -268,9 +273,11 @@ class PPEFunc
     return mip;
   }
 
-  double operator()(double* x, double* p){
+  double operator()(double* x, double* p)
+  {
     double returnVal = ppeFunc(x,p);
-    if(domip_){
+    if(domip_)
+    {
       returnVal += mipFunc(x,p);
     }
     return returnVal;

@@ -1,7 +1,7 @@
 #ifndef NTUPLE_READER_H
 #define NTUPLE_READER_H
 
-#include "FitSiPMData/include/NTRException.h"
+#include "NTRException.h"
 
 #include "TLorentzVector.h"
 #include "TBranch.h"

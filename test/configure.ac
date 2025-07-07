@@ -1,4 +1,4 @@
-AC_INIT(program, 1.0)
+AC_INIT([program],[1.0])
 
 dnl Switch to a C++ compiler, and check if it works.
 AC_LANG(C++)
@@ -37,22 +37,23 @@ AC_CHECK_PROG(rootconfigfound, root-config, yes, no)
 AC_CHECK_PROG(rootcintfound, rootcint, yes, no)
 
 if test ${rootconfigfound} == no; then
-   AC_ERROR([ROOT: root-config not found.])
+   AC_MSG_ERROR(ROOT: root-config not found.)
 fi
 
 if test ${rootcintfound} == no; then
-   AC_ERROR([ROOT: rootcint not found.])
+   AC_MSG_ERROR(ROOT: rootcint not found.)
 fi   
 
 dnl check for python 
 AC_CHECK_PROG(pythonconfigfound, python-config, yes, no)
 
 if test ${pythonconfigfound} == no; then
-dnl   AC_WARN([Optional dependency missing: python-config not found.])
+dnl   AC_MSG_WARN(Optional dependency missing: python-config not found.)
    AC_SUBST(PYTHONCFG, "")
 else
    AC_SUBST(PYTHONCFG, python-config)
 fi
 
 dnl Process Makefile.in to create Makefile
-AC_OUTPUT(Makefile)
+AC_CONFIG_FILES([Makefile])
+AC_OUTPUT
